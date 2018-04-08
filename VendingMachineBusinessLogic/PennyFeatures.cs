@@ -4,11 +4,11 @@ using System.Text;
 
 namespace VendingMachineBusinessLogic
 {
-    public class DimeFeatures : IUSCoinFeatures
+    public class PennyFeatures : IUSCoinFeatures
     {
         public USCoinTypes Type()
         {
-            return USCoinTypes.Dime;
+            return USCoinTypes.Penny;
         }
     }
 }

@@ -6,9 +6,9 @@ namespace VendingMachineBusinessLogic
 {
     public class NickelFeatures : IUSCoinFeatures
     {
-        USCoinTypes IUSCoinFeatures.Type()
+        public USCoinTypes Type()
         {
-            throw new NotImplementedException();
+            return USCoinTypes.Nickel;
         }
     }
 }
