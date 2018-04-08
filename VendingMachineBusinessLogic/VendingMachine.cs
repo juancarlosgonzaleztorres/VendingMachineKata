@@ -8,6 +8,8 @@ namespace VendingMachineBusinessLogic
         {
         }
 
+        public string Display => "INSERT COIN";
+
         public bool InsertCoin(IUSCoin usCoin)
         {
             if (IsValid(usCoin))

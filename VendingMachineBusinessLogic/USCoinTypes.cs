@@ -5,6 +5,6 @@
         Nickel,
         Dime,
         Quarter,
-        Pennie
+        Penny
     }
 }
