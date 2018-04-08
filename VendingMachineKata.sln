@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore2UI", "DotNetCore2UI\DotNetCore2UI.csproj", "{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineUnitTests", "VendingMachineUnitTests\VendingMachineUnitTests.csproj", "{EA11715A-6F05-4AAD-824F-A05A62734F3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineBusinessLogic", "VendingMachineBusinessLogic\VendingMachineBusinessLogic.csproj", "{D4F843DF-C8C0-4B8F-A551-25348821BB3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA11715A-6F05-4AAD-824F-A05A62734F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA11715A-6F05-4AAD-824F-A05A62734F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA11715A-6F05-4AAD-824F-A05A62734F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA11715A-6F05-4AAD-824F-A05A62734F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F843DF-C8C0-4B8F-A551-25348821BB3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F843DF-C8C0-4B8F-A551-25348821BB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F843DF-C8C0-4B8F-A551-25348821BB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F843DF-C8C0-4B8F-A551-25348821BB3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
