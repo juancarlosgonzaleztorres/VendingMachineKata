@@ -1,4 +1,6 @@
-﻿namespace VendingMachineBusinessLogic
+﻿using System;
+
+namespace VendingMachineBusinessLogic
 {
     public class VendingMachine
     {
@@ -44,9 +46,10 @@
         public Product SelectProduct(ProductTypes productType)
         {
             var product = repository.Get(productType);            
-            if (Amount == product.Price)
+            if (Amount >= product.Price)
             {
                 display = Constants.THANK_YOU;
+                amount -= product.Price;
                 return product;
             }                
             else if (lastProductChecked.Name!=productType.ToString())
@@ -59,6 +62,13 @@
             }
             lastProductChecked.Name = productType.ToString();
             return null;
+        }
+
+        public decimal GetChangeReturn()
+        {
+            var changeReturn = amount;
+            amount = 0;
+            return changeReturn;
         }
     }
 }
