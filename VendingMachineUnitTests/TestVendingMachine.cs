@@ -11,11 +11,22 @@ namespace VendingMachineUnitTests
         private const string PRICE_DOT_65 = "PRICE $0.65";
         readonly VendingMachine vendingMachine;
         readonly QuarterFeatures quarterFeatures;
+        readonly DimeFeatures dimeFeatures;
+        readonly NickelFeatures nickelFeatures;
+        readonly PennyFeatures pennyFeatures;
+        readonly USCoin quarter, dime, nickel, penny;
 
         public TestVendingMachine()
         {
             vendingMachine = new VendingMachine();
             quarterFeatures = new QuarterFeatures();
+            dimeFeatures = new DimeFeatures();
+            nickelFeatures = new NickelFeatures();
+            pennyFeatures = new PennyFeatures();
+            quarter = new USCoin(quarterFeatures);
+            dime = new USCoin(dimeFeatures);
+            nickel = new USCoin(nickelFeatures);
+            penny = new USCoin(pennyFeatures);
         }
 
         [TestMethod]
@@ -26,23 +37,19 @@ namespace VendingMachineUnitTests
 
         [TestMethod]
         public void CoinIsValidReturnsTrue()
-        {
-            var usCoin = new USCoin(new QuarterFeatures());            
-            Assert.AreEqual(true, vendingMachine.InsertCoin(usCoin));
+        {            
+            Assert.AreEqual(true, vendingMachine.InsertCoin(quarter));
         }
 
         [TestMethod]
         public void CoinIsNotValidReturnsFalse()
-        {
-            var usCoin = new USCoin(new PennyFeatures());
-            Assert.AreEqual(false, vendingMachine.InsertCoin(usCoin));
+        {            
+            Assert.AreEqual(false, vendingMachine.InsertCoin(penny));
         }
 
         [TestMethod]
         public void DimeAndNickelReturnValidCoin()
-        {
-            var dime = new USCoin(new DimeFeatures());
-            var nickel = new USCoin(new NickelFeatures());
+        {            
             Assert.AreEqual(true, vendingMachine.InsertCoin(dime));
             Assert.AreEqual(true, vendingMachine.InsertCoin(nickel));
         }
@@ -76,12 +83,11 @@ namespace VendingMachineUnitTests
 
         [TestMethod]
         public void GetColaProduct()
-        {
-            var quarterFeatures = new QuarterFeatures();
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+        {            
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
 
             var productSelected = vendingMachine.SelectProduct(ProductTypes.Cola);
 
@@ -92,7 +98,7 @@ namespace VendingMachineUnitTests
         [TestMethod]
         public void NotEnoughMoneyDenyColaProduct()
         {            
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));     
+            vendingMachine.InsertCoin(quarter);
             
             var productSelected = vendingMachine.SelectProduct(ProductTypes.Cola);
 
@@ -103,14 +109,22 @@ namespace VendingMachineUnitTests
         [TestMethod]
         public void ReturnChangeAfterBuying()
         {
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
-            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
 
             var productSelected = vendingMachine.SelectProduct(ProductTypes.Candy);
 
-            Assert.AreEqual(0.10m, vendingMachine.GetChangeReturn());
-            
+            Assert.AreEqual(0.10m, vendingMachine.GetChangeReturn());            
+        }
+
+        [TestMethod]
+        public void ReturnMoney()
+        {
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(dime);
+            vendingMachine.InsertCoin(nickel);            
+            Assert.AreEqual(0.40m, vendingMachine.GetChangeReturn());
         }
     }
 }
