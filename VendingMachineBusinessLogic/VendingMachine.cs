@@ -7,18 +7,18 @@ namespace VendingMachineBusinessLogic
         decimal amount;
         string display;        
         Product lastProductChecked;
-        readonly IProductRepository repository;
+        readonly IProductRepository productRepository;
 
         public VendingMachine()
         {
-            repository = new MockRepository();            
+            productRepository = new MockProductRepository();            
             display = Constants.INSERT_COIN;
             lastProductChecked = new Product();
         }
 
         public VendingMachine(IProductRepository repository)
         {
-            this.repository = repository;
+            this.productRepository = repository;
         }
 
         public string Display => display;
@@ -45,11 +45,17 @@ namespace VendingMachineBusinessLogic
 
         public Product SelectProduct(ProductTypes productType)
         {
-            var product = repository.Get(productType);            
-            if (Amount >= product.Price)
+            var product = productRepository.Check(productType);
+            if (product.Number == 0)
             {
-                display = Constants.THANK_YOU;
+                display = Constants.SOLD_OUT;
+                return null;
+            }
+            else if (Amount >= product.Price)
+            {
                 amount -= product.Price;
+                productRepository.Remove(productType);
+                display = Constants.THANK_YOU;                
                 return product;
             }                
             else if (lastProductChecked.Name!=productType.ToString())

@@ -2,6 +2,7 @@
 {
     public interface IProductRepository
     {
-        Product Get(ProductTypes productType);
+        Product Check(ProductTypes productType);
+        void Remove(ProductTypes productType);
     }
 }
