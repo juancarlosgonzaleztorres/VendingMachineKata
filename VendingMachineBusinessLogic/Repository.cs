@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace VendingMachineBusinessLogic
 {
-    public class MockRepository : IRepository
+    public class MockRepository : IProductRepository
     {
         Dictionary<ProductTypes, decimal> productsDictionary;
         public MockRepository()

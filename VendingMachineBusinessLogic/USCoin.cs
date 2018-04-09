@@ -11,6 +11,8 @@ namespace VendingMachineBusinessLogic
             this.features = features;
         }
 
+        public decimal Value => features.Value;
+
         public USCoinTypes Type()
         {
             return features.Type();

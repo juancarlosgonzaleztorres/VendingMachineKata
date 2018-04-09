@@ -6,6 +6,9 @@ namespace VendingMachineUnitTests
     [TestClass]
     public class TestVendingMachine
     {
+        private const string PRICE_1 = "PRICE $1.00";
+        private const string PRICE_DOT_5 = "PRICE $0.50";
+        private const string PRICE_DOT_65 = "PRICE $0.65";
         readonly VendingMachine vendingMachine;
 
         public TestVendingMachine()
@@ -16,7 +19,7 @@ namespace VendingMachineUnitTests
         [TestMethod]
         public void DisplayInsertCoin()
         {                                    
-            Assert.AreEqual("INSERT COIN", vendingMachine.Display);
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
         }       
 
         [TestMethod]
@@ -44,18 +47,52 @@ namespace VendingMachineUnitTests
 
         [TestMethod]
         public void SelectProductColaDisplaysPrice()
-        {
+        {            
             vendingMachine.SelectProduct(ProductTypes.Cola);
-            Assert.AreEqual("PRICE $1.00", vendingMachine.Display);
+            Assert.AreEqual(PRICE_1, vendingMachine.Display);
         }
 
         [TestMethod]
         public void SelectProductsDisplaysCorrectPrice()
         {
             vendingMachine.SelectProduct(ProductTypes.Chips);
-            Assert.AreEqual("PRICE $0.50", vendingMachine.Display);
+            Assert.AreEqual(PRICE_DOT_5, vendingMachine.Display);
             vendingMachine.SelectProduct(ProductTypes.Candy);
-            Assert.AreEqual("PRICE $0.65", vendingMachine.Display);
+            Assert.AreEqual(PRICE_DOT_65, vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void CheckInsertCoinDisplaysInSubsequentSelection()
+        {
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+            Assert.AreEqual(PRICE_DOT_5, vendingMachine.Display);
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void GetColaProduct()
+        {
+            var quarterFeatures = new QuarterFeatures();
+            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+            vendingMachine.InsertCoin(new USCoin(quarterFeatures));
+            var productSelected = vendingMachine.SelectProduct(ProductTypes.Cola);
+
+            Assert.AreEqual(ProductTypes.Cola.ToString(), productSelected.Name);
+            Assert.AreEqual(Constants.THANK_YOU, vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void NotEnoughMoneyDenyColaProduct()
+        {
+            var quarterFeatures = new QuarterFeatures();
+            vendingMachine.InsertCoin(new USCoin(quarterFeatures));            
+            var productSelected = vendingMachine.SelectProduct(ProductTypes.Cola);
+
+            Assert.AreEqual(null, productSelected);
+            Assert.AreEqual(PRICE_1, vendingMachine.Display);
         }
     }
 }

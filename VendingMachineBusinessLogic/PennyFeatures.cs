@@ -6,6 +6,8 @@ namespace VendingMachineBusinessLogic
 {
     public class PennyFeatures : IUSCoinFeatures
     {
+        public decimal Value => 0.001m;
+
         public USCoinTypes Type()
         {
             return USCoinTypes.Penny;

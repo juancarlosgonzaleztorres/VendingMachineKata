@@ -1,31 +1,37 @@
-﻿using System;
-
-namespace VendingMachineBusinessLogic
+﻿namespace VendingMachineBusinessLogic
 {
     public class VendingMachine
     {
         decimal amount;
-        string display;
-        readonly IRepository repository;
+        string display;        
+        Product lastProductChecked;
+        readonly IProductRepository repository;
 
         public VendingMachine()
         {
             repository = new MockRepository();            
-            display = "INSERT COIN";
+            display = Constants.INSERT_COIN;
+            lastProductChecked = new Product();
         }
 
-        public VendingMachine(IRepository repository)
+        public VendingMachine(IProductRepository repository)
         {
             this.repository = repository;
         }
 
         public string Display => display;
 
-        public decimal Amount => amount;       
+        public decimal Amount => amount;        
 
         public bool InsertCoin(IUSCoin usCoin)
         {
-            return IsValid(usCoin);
+            if (IsValid(usCoin))
+            {
+                amount += usCoin.Value;
+                return true;
+            }                
+            else
+                return false;
         }
 
         private bool IsValid(IUSCoin usCoin)
@@ -37,16 +43,21 @@ namespace VendingMachineBusinessLogic
 
         public Product SelectProduct(ProductTypes productType)
         {
-            var product = repository.Get(productType);
+            var product = repository.Get(productType);            
             if (Amount == product.Price)
             {
-                display = "THANK YOU";
+                display = Constants.THANK_YOU;
                 return product;
             }                
+            else if (lastProductChecked.Name!=productType.ToString())
+            {
+                display = Constants.PRICE_DISPLAY + product.Price;
+            }
             else
             {
-                display = "PRICE $" + product.Price;
+                display = Constants.INSERT_COIN;
             }
+            lastProductChecked.Name = productType.ToString();
             return null;
         }
     }

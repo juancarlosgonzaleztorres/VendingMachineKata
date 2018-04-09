@@ -1,6 +1,6 @@
 ﻿namespace VendingMachineBusinessLogic
 {
-    public interface IRepository
+    public interface IProductRepository
     {
         Product Get(ProductTypes productType);
     }
