@@ -1,6 +1,6 @@
 ﻿namespace VendingMachineBusinessLogic
 {
-    public class Product
+    public class Product : IProduct
     {
         public decimal Price { get; set; }
         public string Name { get; set; }

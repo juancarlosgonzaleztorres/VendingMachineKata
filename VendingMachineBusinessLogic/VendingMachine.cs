@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VendingMachineBusinessLogic
 {
@@ -6,22 +8,42 @@ namespace VendingMachineBusinessLogic
     {
         decimal amount;
         string display;        
-        Product lastProductChecked;
+        IProduct lastProductChecked;
         readonly IProductRepository productRepository;
+        CoinHandler coinHandler;
+        static QuarterFeatures quarterFeatures;
+        static DimeFeatures dimeFeatures;
+        static NickelFeatures nickelFeatures;        
 
         public VendingMachine()
         {
-            productRepository = new MockProductRepository();            
-            display = Constants.INSERT_COIN;
+            productRepository = new MockProductRepository();                        
             lastProductChecked = new Product();
+            coinHandler = new CoinHandler();
+            quarterFeatures = new QuarterFeatures();
+            dimeFeatures = new DimeFeatures();
+            nickelFeatures = new NickelFeatures();
+            initialize();            
+        }
+
+        private void initialize()
+        {            
+            display = Constants.INSERT_COIN;
         }
 
         public VendingMachine(IProductRepository repository)
         {
-            this.productRepository = repository;
+            productRepository = repository;
         }
 
-        public string Display => display;
+        public string Display {
+            get
+            {
+                if (coinHandler.NotEnoughChange)
+                    display = Constants.EXACT_CHANGE_ONLY;
+                return display;
+            }
+        }
 
         public decimal Amount => amount;        
 
@@ -30,6 +52,7 @@ namespace VendingMachineBusinessLogic
             if (IsValid(usCoin))
             {
                 amount += usCoin.Value;
+                coinHandler.AddCoins(usCoin.Type(), 1);
                 return true;
             }                
             else
@@ -70,11 +93,28 @@ namespace VendingMachineBusinessLogic
             return null;
         }
 
-        public decimal GetChangeReturn()
+        public Dictionary<USCoinTypes, int> GetMoneyReturn()
         {
-            var changeReturn = amount;
-            amount = 0;
-            return changeReturn;
+            var moneyReturned = coinHandler.GetMoneyReturned(amount);
+            amount -= GetValueOfMoney(moneyReturned);
+            return moneyReturned;
+        }
+
+        public decimal GetValueOfMoney(Dictionary<USCoinTypes, int> moneyReturned)
+        {
+            return   moneyReturned[USCoinTypes.Quarter] * quarterFeatures.Value 
+                   + moneyReturned[USCoinTypes.Dime]    * dimeFeatures.Value 
+                   + moneyReturned[USCoinTypes.Nickel]  * nickelFeatures.Value;
+        }
+
+        public void EmptyCoins()
+        {
+            display = Constants.EXACT_CHANGE_ONLY;
+        }
+
+        public void LoadCoins(USCoinTypes type, int number)
+        {
+            coinHandler.AddCoins(type, number);
         }
     }
 }
