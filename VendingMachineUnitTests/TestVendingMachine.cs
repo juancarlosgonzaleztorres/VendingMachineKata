@@ -119,7 +119,7 @@ namespace VendingMachineUnitTests
             vendingMachine.InsertCoin(quarter);
 
             var productSelected = vendingMachine.SelectProduct(ProductTypes.Candy);
-            var coinsReturned = vendingMachine.GetMoneyReturn();
+            var coinsReturned = vendingMachine.CoinReturn;
             var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
             Assert.AreEqual(0.10m, valueOfMoney);
         }
@@ -130,10 +130,12 @@ namespace VendingMachineUnitTests
             vendingMachine.InsertCoin(quarter);
             vendingMachine.InsertCoin(dime);
             vendingMachine.InsertCoin(nickel);
-            var coinsReturned = vendingMachine.GetMoneyReturn();
+            vendingMachine.GetMoneyReturn();
+            var coinsReturned = vendingMachine.CoinReturn;
             var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
 
             Assert.AreEqual(0.40m, valueOfMoney);
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
         }
 
         [TestMethod]
@@ -148,6 +150,9 @@ namespace VendingMachineUnitTests
             vendingMachine.SelectProduct(ProductTypes.Chips);
 
             Assert.AreEqual(Constants.SOLD_OUT, vendingMachine.Display);
+
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
         }
 
         [TestMethod]
@@ -167,7 +172,7 @@ namespace VendingMachineUnitTests
             vendingMachine.InsertCoin(nickel);
 
             vendingMachine.SelectProduct(ProductTypes.Chips);
-            var coinsReturned = vendingMachine.GetMoneyReturn();
+            var coinsReturned = vendingMachine.CoinReturn;
             var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
 
             Assert.AreEqual(.15m, valueOfMoney);
@@ -183,7 +188,7 @@ namespace VendingMachineUnitTests
 
             var candy = vendingMachine.SelectProduct(ProductTypes.Candy);
 
-            var coinsReturned = vendingMachine.GetMoneyReturn();
+            var coinsReturned = vendingMachine.CoinReturn;
             var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
 
             Assert.AreEqual(.10m, valueOfMoney);
@@ -196,12 +201,41 @@ namespace VendingMachineUnitTests
 
             candy = vendingMachine.SelectProduct(ProductTypes.Candy);
 
-            coinsReturned = vendingMachine.GetMoneyReturn();
+            coinsReturned = vendingMachine.CoinReturn;
             valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
 
             Assert.AreEqual(.05m, valueOfMoney);
+        }
 
+        [TestMethod]
+        public void DisplayAmountAfterInsertingCoin()
+        {
+            vendingMachine.InsertCoin(quarter);
 
+            Assert.AreEqual("$0.25", vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void DisplayInsertCoinWhenAmountIs0()
+        {
+            vendingMachine.GetMoneyReturn();
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void ReturnCoinsAfterBuyingProduct()
+        {
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+
+            vendingMachine.SelectProduct(ProductTypes.Candy);
+            
+            var coinsReturned = vendingMachine.CoinReturn;
+            var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
+
+            Assert.AreEqual(0.35m, valueOfMoney);
         }
 
     }

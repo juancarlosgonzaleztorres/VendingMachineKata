@@ -102,6 +102,11 @@ namespace VendingMachineBusinessLogic
             }
 
             return coinsReturned;
-        }        
+        }
+
+        public void EmptyCoins()
+        {
+            quarters = dimes = nickels = 0;
+        }
     }
 }

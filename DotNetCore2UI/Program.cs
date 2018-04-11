@@ -14,11 +14,13 @@ namespace DotNetCore2UI
             {USCoinTypes.Dime, 0 },
             {USCoinTypes.Nickel, 0 },
         };
-        static decimal moneyValueReturned = 0;
+        
         static void Main(string[] args)
         {
             vendingMachine = new VendingMachine();
-            vendingMachine.LoadCoins(USCoinTypes.Nickel, 3);
+            vendingMachine.LoadCoins(USCoinTypes.Nickel, 100);
+            vendingMachine.LoadCoins(USCoinTypes.Quarter, 100);
+            vendingMachine.LoadCoins(USCoinTypes.Dime, 100);
             while (true)
             {
                 showInterface();
@@ -45,53 +47,52 @@ namespace DotNetCore2UI
                     break;
                 case "4":
                     productBought = vendingMachine.SelectProduct(ProductTypes.Cola);
+                    coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "5":
                     productBought = vendingMachine.SelectProduct(ProductTypes.Chips);
+                    coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "6":
                     productBought = vendingMachine.SelectProduct(ProductTypes.Candy);
+                    coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "7":
-                    coinsReturned = vendingMachine.GetMoneyReturn();
-                    moneyValueReturned = vendingMachine.GetValueOfMoney(coinsReturned);
+                    vendingMachine.GetMoneyReturn();
+                    coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "exit":
                     Environment.Exit(0);
                     break;
                 default:
                     break;
-            }
+            }            
         }
 
         private static void showInterface()
-        {
-            var displayPosition = "             {0}";
-            Console.WriteLine("       AWESOME VENDING MACHINE\n");
-            Console.WriteLine("Amount: {0}", vendingMachine.Amount);
+        {            
+            var displayPosition = "              {0}";
+            Console.WriteLine(    "       VENDING MACHINE BRAINS\n");            
             Console.WriteLine(displayPosition, vendingMachine.Display);
             Console.WriteLine();
-            Console.WriteLine("[1] Insert Quarter [2] Insert Dime  [3] Insert Nickel");
-            Console.WriteLine("[4] Select Cola    [5] Select Chips [6] Select Candy");
-            Console.WriteLine("[7] Return Coins");            
+            Console.WriteLine(    "[1] Insert Quarter [2] Insert Dime  [3] Insert Nickel");
+            Console.WriteLine(    "[4] Select Cola    [5] Select Chips [6] Select Candy");
+            Console.WriteLine(    "[7] Return Coins");            
             Console.WriteLine();
             showOutput();
         }
 
         private static void showOutput()
         {
-            Console.WriteLine("Product Returned: {0}", productBought?.Name);
+            Console.WriteLine("Product dispensed: {0}", productBought?.Name);
+            Console.WriteLine();            
+            Console.WriteLine("Coin return: Quarters:{0}, Dimes:{1}, Nickels:{2} = ${3}",
+                coinsReturned?[USCoinTypes.Quarter] ??0,
+                coinsReturned?[USCoinTypes.Dime] ?? 0,
+                coinsReturned?[USCoinTypes.Nickel] ?? 0,
+                vendingMachine.GetValueOfMoney(coinsReturned));
             Console.WriteLine();
-            Console.WriteLine("Money Returned:");
-            Console.WriteLine("Quarters:{0}, Dimes:{1}, Nickels:{2}",
-                coinsReturned[USCoinTypes.Quarter],
-                coinsReturned[USCoinTypes.Dime],
-                coinsReturned[USCoinTypes.Nickel]);
-            Console.WriteLine();
-            Console.WriteLine("Money value Returned:");
-            Console.WriteLine("{0}", moneyValueReturned);
-            Console.WriteLine();
-            Console.Write("Enter number option and press enter: ", moneyValueReturned);
+            Console.Write("Enter number option and press enter: ");
         }
     }
 }
