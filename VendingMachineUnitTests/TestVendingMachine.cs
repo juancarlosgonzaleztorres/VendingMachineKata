@@ -27,7 +27,7 @@ namespace VendingMachineUnitTests
             dime = new USCoin(dimeFeatures);
             nickel = new USCoin(nickelFeatures);
             penny = new USCoin(pennyFeatures);
-            vendingMachine.LoadCoins(USCoinTypes.Nickel, 3);
+            vendingMachine.LoadCoins(USCoinTypes.Nickel, 3);            
         }
 
         [TestMethod]
@@ -172,5 +172,37 @@ namespace VendingMachineUnitTests
 
             Assert.AreEqual(.15m, valueOfMoney);
         }
+        
+        [TestMethod]
+        public void CustomerIgnoresExactChangeMessage()
+        {
+            //First person
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+
+            var candy = vendingMachine.SelectProduct(ProductTypes.Candy);
+
+            var coinsReturned = vendingMachine.GetMoneyReturn();
+            var valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
+
+            Assert.AreEqual(.10m, valueOfMoney);
+            Assert.AreEqual(Constants.EXACT_CHANGE_ONLY, vendingMachine.Display);
+
+            //Second person
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+
+            candy = vendingMachine.SelectProduct(ProductTypes.Candy);
+
+            coinsReturned = vendingMachine.GetMoneyReturn();
+            valueOfMoney = vendingMachine.GetValueOfMoney(coinsReturned);
+
+            Assert.AreEqual(.05m, valueOfMoney);
+
+
+        }
+
     }
 }

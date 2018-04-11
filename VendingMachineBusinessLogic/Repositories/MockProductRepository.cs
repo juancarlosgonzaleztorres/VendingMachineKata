@@ -15,9 +15,9 @@ namespace VendingMachineBusinessLogic
         private void initialize()
         {
             productsDictionary = new Dictionary<ProductTypes, Product>() {
-                { ProductTypes.Cola,  new Product { Price = 1.00m, Number = 1, Name = ProductTypes.Cola.ToString() } },
-                { ProductTypes.Chips, new Product { Price = 0.50m, Number = 1, Name = ProductTypes.Chips.ToString() } },
-                { ProductTypes.Candy, new Product { Price = 0.65m, Number = 1, Name = ProductTypes.Candy.ToString() } }
+                { ProductTypes.Cola,  new Product { Price = 1.00m, Inventory = 1, Name = ProductTypes.Cola.ToString() } },
+                { ProductTypes.Chips, new Product { Price = 0.50m, Inventory = 1, Name = ProductTypes.Chips.ToString() } },
+                { ProductTypes.Candy, new Product { Price = 0.65m, Inventory = 2, Name = ProductTypes.Candy.ToString() } }
             };
         }
 
@@ -30,8 +30,8 @@ namespace VendingMachineBusinessLogic
         public void Remove(ProductTypes productType)
         {
             var product = productsDictionary.First(p => p.Key == productType);
-            if (product.Value.Number > 0)
-                product.Value.Number--;            
+            if (product.Value.Inventory > 0)
+                product.Value.Inventory--;            
         }
     }    
 }

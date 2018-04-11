@@ -23,7 +23,7 @@ namespace VendingMachineBusinessLogic
             quarterFeatures = new QuarterFeatures();
             dimeFeatures = new DimeFeatures();
             nickelFeatures = new NickelFeatures();
-            initialize();            
+            initialize();
         }
 
         private void initialize()
@@ -69,7 +69,7 @@ namespace VendingMachineBusinessLogic
         public Product SelectProduct(ProductTypes productType)
         {
             var product = productRepository.Check(productType);
-            if (product.Number == 0)
+            if (product.Inventory == 0)
             {
                 display = Constants.SOLD_OUT;
                 return null;

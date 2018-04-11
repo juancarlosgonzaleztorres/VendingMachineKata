@@ -63,12 +63,12 @@ namespace VendingMachineBusinessLogic
                 case USCoinTypes.Penny:
                     break;
                 default:
-                    break;            
+                    break;
             }
             updateAmount();
         }
 
-        public bool NotEnoughChange => (nickels < 3) ? true : false;        
+        public bool NotEnoughChange => ((dimes < 1 && nickels < 1) || nickels < 3 ) ? true : false;        
 
         public Dictionary<USCoinTypes, int> GetMoneyReturned(decimal amount)
         {
