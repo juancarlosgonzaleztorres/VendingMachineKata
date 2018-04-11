@@ -23,12 +23,7 @@ namespace VendingMachineBusinessLogic
             get
             {
                 var coins = coinReturn;
-                coinReturn = new Dictionary<USCoinTypes, int>
-                            {
-                                {USCoinTypes.Quarter, 0 },
-                                {USCoinTypes.Dime, 0 },
-                                {USCoinTypes.Nickel, 0 },
-                            };
+                coinReturn = null;
                 return coins;
             }            
         }  
@@ -76,11 +71,11 @@ namespace VendingMachineBusinessLogic
         public Product SelectProduct(ProductTypes productType)
         {
             var product = productRepository.Check(productType);
-            if (product.Inventory == 0 && lastProductChecked.Name != productType.ToString())
-            {
+            if ( product.Inventory == 0 && lastProductChecked.Name != productType.ToString())
+            {                
                 display = Constants.SOLD_OUT;                
             }
-            else if (Amount >= product.Price)
+            else if (product.Inventory > 0 && Amount >= product.Price)
             {
                 amount -= product.Price;
                 productRepository.Remove(productType);
@@ -109,7 +104,7 @@ namespace VendingMachineBusinessLogic
         }
 
         public decimal GetValueOfMoney(Dictionary<USCoinTypes, int> moneyReturned) =>
-            (moneyReturned == null)?0:
+            (moneyReturned == null)?0.00m:
                      moneyReturned[USCoinTypes.Quarter] * quarterFeatures.Value 
                    + moneyReturned[USCoinTypes.Dime]    * dimeFeatures.Value 
                    + moneyReturned[USCoinTypes.Nickel]  * nickelFeatures.Value;        

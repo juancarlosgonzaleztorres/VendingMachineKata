@@ -144,7 +144,7 @@ namespace VendingMachineUnitTests
             vendingMachine.InsertCoin(quarter);
             vendingMachine.InsertCoin(quarter);
             vendingMachine.InsertCoin(quarter);
-            vendingMachine.InsertCoin(quarter);            
+            vendingMachine.InsertCoin(quarter);
 
             vendingMachine.SelectProduct(ProductTypes.Chips);
             vendingMachine.SelectProduct(ProductTypes.Chips);
@@ -153,6 +153,33 @@ namespace VendingMachineUnitTests
 
             vendingMachine.SelectProduct(ProductTypes.Chips);
             Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
+        }
+
+        [TestMethod]
+        public void SoldOutDisplayAfterSeveralBuyAtempts()
+        {
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+
+            Assert.AreEqual(Constants.SOLD_OUT, vendingMachine.Display);
+
+            vendingMachine.SelectProduct(ProductTypes.Chips);
+            Assert.AreEqual(Constants.INSERT_COIN, vendingMachine.Display);
+
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+            vendingMachine.InsertCoin(quarter);
+
+            var product = vendingMachine.SelectProduct(ProductTypes.Chips);
+
+            Assert.AreEqual(null, product);
+            Assert.AreEqual(PRICE_DOT_5, vendingMachine.Display);
         }
 
         [TestMethod]
