@@ -6,6 +6,8 @@ Instructions for executing the program:
 3) Open a command prompt or powershell console (In Windows 10 is windows key + R, type powershell or cmd).
 4) Go to PublishOutput folder in the downloaded github repository.
 5) Type "dotnet VendingMachine.dll".
+6) Follow the instructions of the program.
+7) To finish the program type "exit".
 
 For this coding exercise, I used Visual Studio 2017 Community Edition.
 It can be downloaded from https://www.visualstudio.com/vs/whatsnew/
