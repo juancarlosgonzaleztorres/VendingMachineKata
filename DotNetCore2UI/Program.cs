@@ -17,6 +17,7 @@ namespace DotNetCore2UI
         
         static void Main(string[] args)
         {
+            Console.Clear();
             vendingMachine = new VendingMachine(new USCoinHandler(), new MockProductRepository());
             vendingMachine.LoadCoins(CoinTypes.USNickel, 100);
             vendingMachine.LoadCoins(CoinTypes.USQuarter, 100);

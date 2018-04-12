@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "DotNetCore2UI/1.0.0": {
+        "dependencies": {
+          "VendingMachineBusinessLogic": "1.0.0"
+        },
+        "runtime": {
+          "DotNetCore2UI.dll": {}
+        }
+      },
+      "VendingMachineBusinessLogic/1.0.0": {
+        "runtime": {
+          "VendingMachineBusinessLogic.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DotNetCore2UI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "VendingMachineBusinessLogic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
