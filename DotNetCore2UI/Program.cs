@@ -63,6 +63,7 @@ namespace DotNetCore2UI
                     coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "exit":
+                    Console.Clear();
                     Environment.Exit(0);
                     break;
                 default:

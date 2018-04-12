@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore2UI", "DotNetCore2UI\DotNetCore2UI.csproj", "{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine", "DotNetCore2UI\VendingMachine.csproj", "{501F63A1-43F0-4D97-AD16-BF28C1CA9F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineUnitTests", "VendingMachineUnitTests\VendingMachineUnitTests.csproj", "{EA11715A-6F05-4AAD-824F-A05A62734F3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachineUnitTests", "VendingMachineUnitTests\VendingMachineUnitTests.csproj", "{EA11715A-6F05-4AAD-824F-A05A62734F3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineBusinessLogic", "VendingMachineBusinessLogic\VendingMachineBusinessLogic.csproj", "{D4F843DF-C8C0-4B8F-A551-25348821BB3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachineBusinessLogic", "VendingMachineBusinessLogic\VendingMachineBusinessLogic.csproj", "{D4F843DF-C8C0-4B8F-A551-25348821BB3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
