@@ -2,7 +2,7 @@
 {
     public interface IProductRepository
     {
-        Product Check(ProductTypes productType);
-        void Remove(ProductTypes productType);
+        Product Check(int productId);
+        void Remove(int productId);
     }
 }

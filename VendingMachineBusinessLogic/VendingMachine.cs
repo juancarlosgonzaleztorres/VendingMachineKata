@@ -6,19 +6,16 @@ namespace VendingMachineBusinessLogic
     {
         decimal amount;
         string display;
-        IProduct lastProductChecked;
+        int? lastProductCheckedId;
         readonly IProductRepository productRepository;
-        CoinHandler coinHandler;
-        static QuarterFeatures quarterFeatures;
-        static DimeFeatures dimeFeatures;
-        static NickelFeatures nickelFeatures;
-        Dictionary<USCoinTypes, int> coinReturn;
+        readonly ICoinHandler coinHandler;
+        Dictionary<CoinTypes, int> coinReturn;
 
         public decimal Amount => amount;
 
-        public string Display => coinHandler.NotEnoughChange ? Constants.EXACT_CHANGE_ONLY : display;
+        public string Display => coinHandler.NotEnoughChange ? Message.EXACT_CHANGE_ONLY : display;
 
-        public Dictionary<USCoinTypes, int> CoinReturn
+        public Dictionary<CoinTypes, int> CoinReturn
         {
             get
             {
@@ -30,33 +27,29 @@ namespace VendingMachineBusinessLogic
 
         public VendingMachine()
         {
-            productRepository = new MockProductRepository();                        
-            lastProductChecked = new Product();
-            coinHandler = new CoinHandler();
-            quarterFeatures = new QuarterFeatures();
-            dimeFeatures = new DimeFeatures();
-            nickelFeatures = new NickelFeatures();
+            productRepository = new MockProductRepository();                                    
+            coinHandler = new USCoinHandler();
             initialize();
         }
 
-        public VendingMachine(IProduct product, IProductRepository productRepository)
+        public VendingMachine(ICoinHandler coinHandler, IProductRepository productRepository)
         {
 
         }
 
-        private void initialize() => display = Constants.INSERT_COIN;        
+        private void initialize() => display = Message.INSERT_COIN;        
 
         public VendingMachine(IProductRepository repository)
         {
             productRepository = repository;
         }        
         
-        public bool InsertCoin(IUSCoin usCoin)         
+        public bool InsertCoin(ICoin coinType)
         {            
-            if (IsValid(usCoin))
+            if (IsValid(coinType))
             {
-                amount += usCoin.Value;
-                coinHandler.AddCoins(usCoin.Type(), 1);
+                amount += coinType.Value;
+                coinHandler.InsertCoin(coinType.Type(), 1);
                 display = "$"+amount.ToString();
                 return true;
             }                
@@ -64,35 +57,33 @@ namespace VendingMachineBusinessLogic
                 return false;
         }
 
-        private bool IsValid(IUSCoin usCoin) => (usCoin.Type() == USCoinTypes.Nickel ||
-                    usCoin.Type() == USCoinTypes.Dime ||
-                    usCoin.Type() == USCoinTypes.Quarter) ? true : false;        
+        private bool IsValid(ICoin coin) => coinHandler.IsValid(coin);
 
-        public Product SelectProduct(ProductTypes productType)
+        public Product SelectProduct(int productId)
         {
-            var product = productRepository.Check(productType);
-            if ( product.Inventory == 0 && lastProductChecked.Name != productType.ToString())
+            var product = productRepository.Check(productId);
+            if ( product.Stock == 0 && lastProductCheckedId != productId)
             {                
-                display = Constants.SOLD_OUT;                
+                display = Message.SOLD_OUT;                
             }
-            else if (product.Inventory > 0 && Amount >= product.Price)
+            else if (product.Stock > 0 && Amount >= product.Price)
             {
                 amount -= product.Price;
-                productRepository.Remove(productType);
+                productRepository.Remove(productId);
                 GetMoneyReturn();
-                display = Constants.THANK_YOU;
-                lastProductChecked.Name = string.Empty;
+                display = Message.THANK_YOU;
+                lastProductCheckedId = null;
                 return product;
             }                
-            else if (lastProductChecked.Name != productType.ToString() || amount > 0)
+            else if (lastProductCheckedId != productId || amount > 0)
             {
-                display = Constants.PRICE_DISPLAY + product.Price;
+                display = Message.PRICE_DISPLAY + product.Price;
             }
             else
             {
-                display = Constants.INSERT_COIN;
+                display = Message.INSERT_COIN;
             }
-            lastProductChecked.Name = productType.ToString();
+            lastProductCheckedId = productId;
             return null;
         }
 
@@ -100,17 +91,14 @@ namespace VendingMachineBusinessLogic
         {
             coinReturn = coinHandler.GetMoneyReturned(amount);
             amount -= GetValueOfMoney(coinReturn);
-            display = Constants.INSERT_COIN;
+            display = Message.INSERT_COIN;
         }
 
-        public decimal GetValueOfMoney(Dictionary<USCoinTypes, int> moneyReturned) =>
-            (moneyReturned == null)?0.00m:
-                     moneyReturned[USCoinTypes.Quarter] * quarterFeatures.Value 
-                   + moneyReturned[USCoinTypes.Dime]    * dimeFeatures.Value 
-                   + moneyReturned[USCoinTypes.Nickel]  * nickelFeatures.Value;        
-
+        public decimal GetValueOfMoney(Dictionary<CoinTypes, int> moneyReturned) =>
+            coinHandler.GetValueOfMoney(moneyReturned);
+        
         public void EmptyCoins() => coinHandler.EmptyCoins();        
 
-        public void LoadCoins(USCoinTypes type, int number) => coinHandler.AddCoins(type, number);        
+        public void LoadCoins(CoinTypes type, int number) => coinHandler.InsertCoin(type, number);
     }
 }

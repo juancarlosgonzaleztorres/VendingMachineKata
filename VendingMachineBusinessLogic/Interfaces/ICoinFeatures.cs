@@ -1,9 +1,9 @@
 ﻿namespace VendingMachineBusinessLogic
 {
-    public interface IUSCoinFeatures
+    public interface ICoinFeatures
     {
         decimal Value { get; }
 
-        USCoinTypes Type();
+        CoinTypes Type();
     }
 }

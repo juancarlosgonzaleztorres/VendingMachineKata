@@ -1,6 +1,6 @@
 ﻿namespace VendingMachineBusinessLogic
 {
-    public static class Constants
+    public static class Message
     {
         public const string INSERT_COIN = "INSERT COIN";
         public const string THANK_YOU = "THANK YOU";

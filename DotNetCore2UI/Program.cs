@@ -8,19 +8,19 @@ namespace DotNetCore2UI
     {
         static VendingMachine vendingMachine;
         static Product productBought;
-        static Dictionary<USCoinTypes, int> coinsReturned = new Dictionary<USCoinTypes, int>
+        static Dictionary<CoinTypes, int> coinsReturned = new Dictionary<CoinTypes, int>
         {
-            {USCoinTypes.Quarter, 0 },
-            {USCoinTypes.Dime, 0 },
-            {USCoinTypes.Nickel, 0 },
+            {CoinTypes.USQuarter, 0 },
+            {CoinTypes.USDime, 0 },
+            {CoinTypes.USNickel, 0 },
         };
         
         static void Main(string[] args)
         {
             vendingMachine = new VendingMachine();
-            vendingMachine.LoadCoins(USCoinTypes.Nickel, 100);
-            vendingMachine.LoadCoins(USCoinTypes.Quarter, 100);
-            vendingMachine.LoadCoins(USCoinTypes.Dime, 100);
+            vendingMachine.LoadCoins(CoinTypes.USNickel, 100);
+            vendingMachine.LoadCoins(CoinTypes.USQuarter, 100);
+            vendingMachine.LoadCoins(CoinTypes.USDime, 100);
             while (true)
             {
                 showInterface();
@@ -31,9 +31,9 @@ namespace DotNetCore2UI
 
         private static void selectOption(string option)
         {
-            var quarter = new USCoin(new QuarterFeatures());
-            var dime = new USCoin(new DimeFeatures());
-            var nickel = new USCoin(new NickelFeatures());
+            var quarter = new Coin(new USQuarterFeatures());
+            var dime = new Coin(new USDimeFeatures());
+            var nickel = new Coin(new USNickelFeatures());
             switch (option.ToLower())
             {
                 case "1":
@@ -46,15 +46,15 @@ namespace DotNetCore2UI
                     vendingMachine.InsertCoin(nickel);
                     break;
                 case "4":
-                    productBought = vendingMachine.SelectProduct(ProductTypes.Cola);
+                    productBought = vendingMachine.SelectProduct((int)ProductTypes.Cola);
                     coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "5":
-                    productBought = vendingMachine.SelectProduct(ProductTypes.Chips);
+                    productBought = vendingMachine.SelectProduct((int)ProductTypes.Chips);
                     coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "6":
-                    productBought = vendingMachine.SelectProduct(ProductTypes.Candy);
+                    productBought = vendingMachine.SelectProduct((int)ProductTypes.Candy);
                     coinsReturned = vendingMachine.CoinReturn;
                     break;
                 case "7":
@@ -87,9 +87,9 @@ namespace DotNetCore2UI
             Console.WriteLine("Product dispensed: {0}", productBought?.Name);
             Console.WriteLine();            
             Console.WriteLine("Coin return: Quarters:{0}, Dimes:{1}, Nickels:{2} = ${3}",
-                coinsReturned?[USCoinTypes.Quarter] ??0,
-                coinsReturned?[USCoinTypes.Dime] ?? 0,
-                coinsReturned?[USCoinTypes.Nickel] ?? 0,
+                coinsReturned?[CoinTypes.USQuarter] ??0,
+                coinsReturned?[CoinTypes.USDime] ?? 0,
+                coinsReturned?[CoinTypes.USNickel] ?? 0,
                 vendingMachine.GetValueOfMoney(coinsReturned));
             Console.WriteLine();
             Console.Write("Enter number option and press enter: ");
