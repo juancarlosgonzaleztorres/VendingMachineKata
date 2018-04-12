@@ -18,7 +18,7 @@ namespace VendingMachineUnitTests
 
         public TestVendingMachine()
         {
-            vendingMachine = new VendingMachine();
+            vendingMachine = new VendingMachine(new USCoinHandler(), new MockProductRepository());
             quarterFeatures = new USQuarterFeatures();
             dimeFeatures = new USDimeFeatures();
             nickelFeatures = new USNickelFeatures();

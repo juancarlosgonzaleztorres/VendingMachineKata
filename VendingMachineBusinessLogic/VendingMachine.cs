@@ -25,16 +25,11 @@ namespace VendingMachineBusinessLogic
             }            
         }  
 
-        public VendingMachine()
-        {
-            productRepository = new MockProductRepository();                                    
-            coinHandler = new USCoinHandler();
-            initialize();
-        }
-
         public VendingMachine(ICoinHandler coinHandler, IProductRepository productRepository)
         {
-
+            this.coinHandler = coinHandler;
+            this.productRepository = productRepository;
+            initialize();
         }
 
         private void initialize() => display = Message.INSERT_COIN;        
